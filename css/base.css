@@ -1,0 +1,29 @@
+/* base.css — layout only. No colours, no type styling. */
+*, *::before, *::after { box-sizing: border-box; }
+html, body { height: 100%; overflow: hidden; }
+body { display: grid; grid-template-areas: "sea" "stage" "ui"; }
+#sea { grid-area: sea; position: fixed; inset: 0; z-index: 0; pointer-events: none; }
+#stage { grid-area: stage; position: fixed; inset: 0; z-index: 1; pointer-events: none; }
+#ui { grid-area: ui; position: fixed; inset: 0; z-index: 2;
+      display: grid;
+      grid-template-areas:
+        "mast modes"
+        "card map"
+        "log  ctr"
+        "hud  share";
+      grid-template-columns: minmax(28rem, 46vw) 1fr; }
+.card { grid-area: card; }
+.map { grid-area: map; }
+.controls { grid-area: ctr; }
+.modes { grid-area: modes; }
+.masthead { grid-area: mast; }
+.hud { grid-area: hud; }
+.log { grid-area: log; }
+.sharewrap { grid-area: share; }
+.banner { position: fixed; left: 0; right: 0; top: 0;
+         animation: drop 600ms cubic-bezier(.2,.8,.2,1) both; }
+@keyframes drop { from { transform: translateY(-100%); } to { transform: translateY(0); } }
+.map { cursor: crosshair; touch-action: none; }
+.map-band { position: absolute; left: 0; right: 0; }
+.map-target { position: absolute; left: 0; right: 0; }
+.map-mark { position: absolute; left: 0; right: 0; }

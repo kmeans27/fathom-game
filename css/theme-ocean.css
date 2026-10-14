@@ -1,0 +1,27 @@
+/* theme-ocean.css — colour and type. This is the whole look of the game. */
+:root {
+  --ink-0: #02060e; --ink-1: #04121f; --ink-2: #06233a;
+  --foam: #cfe9f2; --dim: #7a94a8; --glow: #2fd4ff; --amber: #ffb347;
+  --line: rgba(47, 212, 255, 0.35);
+  font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+}
+body { background: var(--ink-0); color: var(--foam); }
+h1 { letter-spacing: 0.5rem; font-weight: 800; }
+.tagline { color: var(--dim); font-size: 0.75rem; letter-spacing: 0.25rem; }
+.btn { border: 1px solid var(--line); background: var(--ink-1); color: var(--foam);
+       padding: 0.6rem 1rem; font-size: 0.85rem; letter-spacing: 0.1rem; }
+.btn:disabled { color: var(--dim); border-color: rgba(47,212,255,0.12); }
+.btn:not(:disabled) { cursor: pointer; }
+.btn:hover:not(:disabled) { background: var(--ink-2); border-color: var(--glow); }
+.map { background: var(--ink-1); border: 1px solid var(--line); }
+.map-band { background: rgba(47, 212, 255, 0.18); border: 1px solid var(--line); }
+.map-target { background: var(--amber); }
+.map-mark { background: var(--foam); }
+.card-name { font-weight: 700; letter-spacing: 0.1rem; }
+.card-flavour { color: var(--dim); font-style: italic; }
+.hud-points { font-variant-numeric: tabular-nums; }
+.hud-pings, .hud-round { color: var(--dim); }
+.log-line { font-variant-numeric: tabular-nums; color: var(--dim); font-size: 0.8rem; }
+.log-line:last-of-type { color: var(--foam); }
+.banner { background: var(--ink-0); color: var(--amber); font-weight: 800; letter-spacing: 0.3rem; }
+pre.share { background: var(--ink-0); border: 1px solid var(--line); }

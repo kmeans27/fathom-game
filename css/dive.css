@@ -1,0 +1,37 @@
+/* dive.css — the descent itself: the page sinks as your score rises.
+   --depth is set by main.js: 0..700 points. */
+@property --depth { initial-value: 0; inherits: true; transition: --depth 900ms cubic-bezier(.2,.8,.2,1); }
+#sea {
+  background:
+    linear-gradient(
+      to bottom,
+      var(--ink-0) 0%,
+      var(--ink-1) calc(10% + var(--depth) * 0.014%),
+      var(--ink-2) calc(30% + var(--depth) * 0.02%),
+      var(--ink-0) calc(60% + var(--depth) * 0.03%),
+      #000002 100%
+    );
+}
+/* faint light shafts that slide downward as the score grows */
+#stage::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: repeating-linear-gradient(115deg, rgba(47,212,255,.05) 0 2px, transparent 2px 90px);
+  transform: translateY(calc(var(--depth) * -0.6px));
+  animation: drift 24s linear infinite;
+}
+#stage::after {
+  content: '';
+  position: absolute; inset: 0;
+  background: repeating-linear-gradient(70deg, rgba(47,212,255,.04) 0 1px, transparent 1px 140px);
+  transform: translateY(calc(var(--depth) * -0.9px));
+  animation: drift 17s linear infinite reverse;
+}
+@keyframes drift { from { transform: translateY(0); } to { transform: translateY(60px); } }
+/* the marker is a hairline with a glow; the target is a solid amber line */
+.map-mark { box-shadow: 0 0 8px var(--glow); height: 2px; }
+.map-target { height: 2px; box-shadow: 0 0 10px var(--amber); }
+@media (prefers-reduced-motion: reduce) {
+  #stage::before, #stage::after { animation: none; }
+  @property { transition: none; }
+}
