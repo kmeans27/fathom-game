@@ -1,29 +1,39 @@
-/* audio.js — tiny WebAudio pings. No files, no autoplay, fully optional. */
+/* audio.js — tiny WebAudio pings. No files, no autoplay, fully optional.
+   Pads carry a low fifth so hits read as sonar, not beeps. */
 export let audioCtx = null;
 export function initAudio() {
   try { audioCtx = new AudioContext(); } catch { audioCtx = null; }
 }
-export function ping(pitch = 0.18) {
+function tone(freq, dur, peak = 0.1, type = 'sine') {
   if (!audioCtx) return;
   const osc = audioCtx.createOscillator();
   const gain = audioCtx.createGain();
-  osc.type = 'sine';
-  osc.frequency.value = 1 / pitch;
+  osc.type = type;
+  osc.frequency.value = freq;
   gain.gain.setValueAtTime(0.0001, audioCtx.currentTime);
-  gain.gain.exponentialRampToValueAtTime(0.12, audioCtx.currentTime + 0.05);
-  gain.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + 0.6);
+  gain.gain.exponentialRampToValueAtTime(peak, audioCtx.currentTime + 0.04);
+  gain.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + dur);
   osc.connect(gain);
   osc.start();
-  osc.stop(audioCtx.currentTime + 0.65);
+  osc.stop(audioCtx.currentTime + dur + 0.05);
+}
+export function ping(pitch = 0.18) {
+  const f = 1 / pitch;
+  tone(f, 0.55, 0.1);
+  tone(f / 2, 0.4, 0.05);
 }
 export function thud() {
-  if (!audioCtx) return;
-  const osc = audioCtx.createOscillator();
-  const gain = audioCtx.createGain();
-  osc.type = 'triangle';
-  osc.frequency.value = 70;
-  gain.gain.value = 0.18;
-  osc.connect(gain);
-  osc.start();
-  osc.stop(audioCtx.currentTime + 0.25);
+  tone(70, 0.25, 0.18, 'triangle');
+  tone(46, 0.3, 0.12, 'triangle');
+}
+export function hitSound(tier) {
+  if (tier === 'perfect') { ping(0.1); ping(0.16); tone(1600, 0.5, 0.06); }
+  else if (tier === 'bullseye') ping(0.14);
+  else if (tier === 'hit') ping(0.22);
+  else if (tier === 'graze') tone(320, 0.4, 0.06);
+  else thud();
+}
+export function fanfare() {
+  const notes = [523, 659, 784, 1046];
+  for (let i = 0; i < notes.length; i++) tone(notes[i], 0.4, 0.07);
 }

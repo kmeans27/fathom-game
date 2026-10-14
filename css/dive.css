@@ -34,4 +34,6 @@
 @media (prefers-reduced-motion: reduce) {
   #stage::before, #stage::after { animation: none; }
   @property { transition: none; }
+  .map-band { transition: none; }
+  .btn { transition: none; }
 }

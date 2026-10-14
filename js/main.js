@@ -6,11 +6,16 @@ import { evaluate } from './score.js';
 import { sweep, echo, canSweep, canEcho } from './sonar.js';
 import { shareText } from './share.js';
 import { recordDaily } from './save.js';
-import { shake } from './fx.js';
-import { initAudio, ping, thud } from './audio.js';
+import { shake, burst, reveal } from './fx.js';
+import { initAudio, hitSound, fanfare } from './audio.js';
 import * as UI from './ui.js';
 
 let state = null;
+
+function refreshActions() {
+  UI.setActionEnabled('sweep', canSweep(state));
+  UI.setActionEnabled('echo', canEcho(state));
+}
 
 function start(mode, seed, label) {
   const rounds = generateRounds(seed);
@@ -25,12 +30,13 @@ function openRound() {
   state.lo = 0;
   state.hi = TRENCH.depthMax;
   state.used = 0;
+  state.guess = Math.round(TRENCH.depthMax / 2);
   UI.setCard(r.name, r.flavour);
   UI.setHud(state.points, state.pings, state.i + 1);
   UI.clearBand();
   UI.hideTarget();
   UI.placeMark(TRENCH.depthMax / 2);
-  UI.logLine('');
+  refreshActions();
 }
 
 function commit() {
@@ -38,16 +44,23 @@ function commit() {
   const guess = state.guess;
   const pingsUsed = TRENCH.pingBudget - state.pings - state.used;
   const res = evaluate(guess, r.target, pingsUsed);
+  const mapRect = document.querySelector('.map').getBoundingClientRect();
+  const y = mapRect.top + (r.target / TRENCH.depthMax) * mapRect.height;
+  UI.logLine(`target ${r.target} m · you ${guess} m · ${res.err} m off · ${res.tier} +${res.points}`, res.tier);
   UI.revealTarget(r.target);
+  reveal(r.target, mapRect);
+  if (res.tier !== 'miss') {
+    burst(mapRect.left + mapRect.width / 2, y, res.tier === 'perfect' ? 18 : res.tier === 'bullseye' ? 12 : 8);
+    hitSound(res.tier);
+    const d = document.getElementById('sea');
+    d.style.setProperty('--depth', String(state.points + res.points));
+  } else {
+    hitSound('miss');
+  }
+  shake(res.tier === 'perfect' ? 8 : 4);
   UI.logLine(`target ${r.target} m · you ${guess} m · ${res.err} m off · ${res.tier} +${res.points}`);
   state.points += res.points;
   state.results.push({ tier: res.tier, pings: pingsUsed, target: r.target, guess });
-  if (res.tier !== 'miss') {
-    ping(0.12);
-    const d = document.getElementById('sea');
-    d.style.setProperty('--depth', String(state.points));
-  } else { thud(); }
-  shake(res.tier === 'perfect' ? 8 : 4);
   state.i++;
   if (state.i >= TRENCH.rounds) return finish();
   openRound();
@@ -59,10 +72,13 @@ function finish() {
   const txt = shareText(Number(label), state.results, state.points);
   UI.setShare(txt);
   UI.banner(`${depth} m — ${state.points} points`);
+  fanfare();
   if (state.mode === 'daily') recordDaily(Number(label), state.points, depth, state.results, null);
 }
 
+function dbg(msg) { try { const l = document.querySelector('.log'); if (l) { const d = document.createElement('div'); d.textContent = msg; l.appendChild(d); } } catch {} }
 export function boot() {
+  dbg('BOOT-START');
   UI.build();
   initAudio();
   const now = new Date();
@@ -74,6 +90,7 @@ export function boot() {
   });
   const map = document.querySelector('.map');
   const onPoint = (ev) => {
+    if (!state) return;
     const rect = map.getBoundingClientRect();
     const y = (ev.clientY ?? ev.touches?.[0]?.clientY ?? 0) - rect.top;
     state.guess = Math.round((y / rect.height) * TRENCH.depthMax);
@@ -83,23 +100,25 @@ export function boot() {
   map.addEventListener('pointerdown', onPoint);
   map.addEventListener('touchstart', onPoint);
   document.querySelector('[data-act="sweep"]')?.addEventListener('click', () => {
-    if (!state) return;
+    if (!state || !canSweep(state)) return;
     const r = state.rounds[state.i];
-    if (!canSweep(state)) return;
     state = sweep(state, r.target);
+    state.used++;
     UI.setBand(state.lo, state.hi);
     UI.setHud(state.points, state.pings, state.i + 1);
-    ping(0.3);
+    hitSound('graze');
+    refreshActions();
   });
   document.querySelector('[data-act="echo"]')?.addEventListener('click', () => {
-    if (!state) return;
+    if (!state || !canEcho(state)) return;
     const r = state.rounds[state.i];
-    if (!canEcho(state)) return;
     state = echo(state, r.target);
+    state.used++;
     UI.setBand(state.lo, state.hi);
     UI.setHud(state.points, state.pings, state.i + 1);
-    ping(0.09);
+    hitSound('bullseye');
+    refreshActions();
   });
   document.querySelector('[data-act="commit"]')?.addEventListener('click', commit);
 }
-boot();
+try { boot(); } catch (e) { dbg('BOOT-ERR: ' + e.message); }

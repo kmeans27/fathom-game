@@ -27,3 +27,17 @@ body { display: grid; grid-template-areas: "sea" "stage" "ui"; }
 .map-band { position: absolute; left: 0; right: 0; }
 .map-target { position: absolute; left: 0; right: 0; }
 .map-mark { position: absolute; left: 0; right: 0; }
+/* one column on narrow screens: the map keeps its height, everything stacks */
+@media (max-width: 56rem) {
+  #ui { grid-template-areas:
+        "mast"
+        "modes"
+        "card"
+        "map"
+        "ctr"
+        "log"
+        "hud"
+        "share";
+        grid-template-columns: 1fr; }
+  .map { min-height: 60vh; }
+}

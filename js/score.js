@@ -7,7 +7,7 @@ export function evaluate(guess, target, pingsUsed) {
   for (const t of TIERS) {
     if (err <= t.tol) { tier = t; break; }
   }
-  if (!tier) return { tier: 'miss', points: 0 };
+  if (!tier) return { tier: 'miss', points: 0, err, silent: pingsUsed === 0 };
   const silent = pingsUsed === 0;
   const mult = silent ? TRENCH.blindBonus : 1;
   return {

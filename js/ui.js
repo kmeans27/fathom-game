@@ -22,7 +22,7 @@ export function build() {
     </div>
     <div class="map" role="img" aria-label="depth map from 0 to 1000 metres">
       <div class="map-band"></div>
-      <div class="map-target" hidden></div>
+      <div class="map-target"></div>
       <div class="map-mark"></div>
     </div>
     <div class="card"><h2 class="card-name"></h2><p class="card-flavour"></p></div>
@@ -46,14 +46,18 @@ export function setBand(lo, hi) {
   band.style.top = pct(lo) + '%';
   band.style.height = pct(hi - lo) + '%';
 }
+export function setActionEnabled(act, on) {
+  const btn = document.querySelector(`[data-act="${act}"]`);
+  if (btn) btn.disabled = !on;
+}
 export function clearBand() { els['map-band'].style.display = 'none'; }
 export function placeMark(m) { els['map-mark'].style.top = pct(m) + '%'; }
 export function revealTarget(m) {
   const t = els['map-target'];
-  t.hidden = false;
+  t.style.visibility = 'visible';
   t.style.top = pct(m) + '%';
 }
-export function hideTarget() { els['map-target'].hidden = true; }
+export function hideTarget() { els['map-target'].style.visibility = 'hidden'; }
 export function setCard(name, flavour) {
   els['card-name'].textContent = name;
   els['card-flavour'].textContent = flavour;
@@ -63,9 +67,10 @@ export function setHud(points, pings, round) {
   els['hud-pings'].textContent = `${pings} pings left`;
   els['hud-round'].textContent = `round ${round} of ${TRENCH.rounds}`;
 }
-export function logLine(text) {
+export function logLine(text, tier = null) {
   const line = document.createElement('div');
   line.className = 'log-line';
+  if (tier) line.dataset.tier = tier;
   line.textContent = text;
   els['log'].appendChild(line);
 }

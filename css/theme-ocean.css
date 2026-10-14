@@ -9,13 +9,16 @@ body { background: var(--ink-0); color: var(--foam); }
 h1 { letter-spacing: 0.5rem; font-weight: 800; }
 .tagline { color: var(--dim); font-size: 0.75rem; letter-spacing: 0.25rem; }
 .btn { border: 1px solid var(--line); background: var(--ink-1); color: var(--foam);
-       padding: 0.6rem 1rem; font-size: 0.85rem; letter-spacing: 0.1rem; }
+       padding: 0.6rem 1rem; font-size: 0.85rem; letter-spacing: 0.1rem;
+       transition: background 140ms ease, border-color 140ms ease; }
 .btn:disabled { color: var(--dim); border-color: rgba(47,212,255,0.12); }
 .btn:not(:disabled) { cursor: pointer; }
 .btn:hover:not(:disabled) { background: var(--ink-2); border-color: var(--glow); }
+.btn:not(:disabled):active { background: var(--glow); color: var(--ink-0); }
 .map { background: var(--ink-1); border: 1px solid var(--line); }
-.map-band { background: rgba(47, 212, 255, 0.18); border: 1px solid var(--line); }
-.map-target { background: var(--amber); }
+.map-band { background: rgba(47, 212, 255, 0.18); border: 1px solid var(--line);
+            transition: top 300ms cubic-bezier(.2,.8,.2,1), height 300ms cubic-bezier(.2,.8,.2,1); }
+.map-target { background: var(--amber); visibility: hidden; }
 .map-mark { background: var(--foam); }
 .card-name { font-weight: 700; letter-spacing: 0.1rem; }
 .card-flavour { color: var(--dim); font-style: italic; }
@@ -25,3 +28,6 @@ h1 { letter-spacing: 0.5rem; font-weight: 800; }
 .log-line:last-of-type { color: var(--foam); }
 .banner { background: var(--ink-0); color: var(--amber); font-weight: 800; letter-spacing: 0.3rem; }
 pre.share { background: var(--ink-0); border: 1px solid var(--line); }
+/* tier colouring: the log line and the share grid read as a curve */
+.log-line[data-tier="perfect"], .log-line[data-tier="bullseye"] { color: var(--amber); }
+.log-line[data-tier="perfect"] { font-weight: 700; }
