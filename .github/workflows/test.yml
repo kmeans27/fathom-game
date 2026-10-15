@@ -17,4 +17,6 @@ jobs:
             node --check "$f" || exit 1
           done
       - name: Unit tests
-        run: node --test tests/
+        run: node --test tests/*.test.js
+      - name: Headless smoke run
+        run: node tests/smoke.mjs
