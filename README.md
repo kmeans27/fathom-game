@@ -40,7 +40,7 @@ One file per small part — the game is the map of its own files.
 | `js/share.js` | the emoji grid and share text |
 | `js/save.js` | localStorage bests — no accounts, no server |
 | `js/ui.js` | every DOM node, the depth map, input controls |
-| `js/fx.js` | screen shake |
+| `js/fx.js` | screen shake, particle bursts, the reveal sweep |
 | `js/audio.js` | tiny WebAudio pings, no files |
 | `css/base.css` | layout only |
 | `css/theme-ocean.css` | colour and type only |

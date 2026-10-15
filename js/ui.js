@@ -1,13 +1,12 @@
 /* ui.js — every DOM node, the depth map, and the input controls.
    The map is a vertical ruler: 0 m at the top, 1000 m at the bottom.
    Guessing is one drag on that ruler, so the whole game is one gesture. */
-import { TRENCH, TIERS } from './balance.js';
-export let reduceMotion = false;
-export function motion() {
+let reduceMotion = false;
+function motion() {
   return !reduceMotion && !matchMedia('(prefers-reduced-motion: reduce)').matches;
 }
-export const els = {};
-export function build() {
+const els = {};
+function build() {
   const ui = document.getElementById('ui');
   ui.innerHTML = `
     <div class="masthead"><h1>FATHOM</h1><p class="tagline">a daily depth game</p></div>
@@ -40,42 +39,42 @@ export function build() {
     els[id] = ui.querySelector('.' + id);
   }
 }
-export function pct(m) { return (m / TRENCH.depthMax) * 100; }
-export function setBand(lo, hi) {
+function pct(m) { return (m / TRENCH.depthMax) * 100; }
+function setBand(lo, hi) {
   const band = els['map-band'];
   band.style.top = pct(lo) + '%';
   band.style.height = pct(hi - lo) + '%';
 }
-export function setActionEnabled(act, on) {
+function setActionEnabled(act, on) {
   const btn = document.querySelector(`[data-act="${act}"]`);
   if (btn) btn.disabled = !on;
 }
-export function clearBand() { els['map-band'].style.display = 'none'; }
-export function placeMark(m) { els['map-mark'].style.top = pct(m) + '%'; }
-export function revealTarget(m) {
+function clearBand() { els['map-band'].style.display = 'none'; }
+function placeMark(m) { els['map-mark'].style.top = pct(m) + '%'; }
+function revealTarget(m) {
   const t = els['map-target'];
   t.style.visibility = 'visible';
   t.style.top = pct(m) + '%';
 }
-export function hideTarget() { els['map-target'].style.visibility = 'hidden'; }
-export function setCard(name, flavour) {
+function hideTarget() { els['map-target'].style.visibility = 'hidden'; }
+function setCard(name, flavour) {
   els['card-name'].textContent = name;
   els['card-flavour'].textContent = flavour;
 }
-export function setHud(points, pings, round) {
+function setHud(points, pings, round) {
   els['hud-points'].textContent = `${points} / ${TRENCH.maxPoints}`;
   els['hud-pings'].textContent = `${pings} pings left`;
   els['hud-round'].textContent = `round ${round} of ${TRENCH.rounds}`;
 }
-export function logLine(text, tier = null) {
+function logLine(text, tier = null) {
   const line = document.createElement('div');
   line.className = 'log-line';
   if (tier) line.dataset.tier = tier;
   line.textContent = text;
   els['log'].appendChild(line);
 }
-export function setShare(text) { els['share'].textContent = text; }
-export function banner(text) {
+function setShare(text) { els['share'].textContent = text; }
+function banner(text) {
   const b = document.createElement('div');
   b.className = 'banner';
   b.textContent = text;

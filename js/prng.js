@@ -1,6 +1,6 @@
 /* prng.js — deterministic RNG so every player gets the same daily trench.
    mulberry32: fast, well-distributed, 32-bit state. No dependencies. */
-export function mulberry32(seed) {
+function mulberry32(seed) {
   let s = seed | 0;
   return () => {
     s = (s + 0x6d2b79f5) | 0;
@@ -10,7 +10,7 @@ export function mulberry32(seed) {
   };
 }
 /* FNV-1a string hash -> 32-bit seed */
-export function hashSeed(str) {
+function hashSeed(str) {
   let h = 2166136261;
   for (let i = 0; i < str.length; i++) {
     h ^= str.charCodeAt(i);

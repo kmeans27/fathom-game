@@ -1,7 +1,7 @@
 import test from 'node:test';
 import { strict as assert } from 'node:assert';
-import { sweep, echo, canSweep, canEcho } from '../js/sonar.js';
-import { TRENCH } from '../js/balance.js';
+import { game } from './loader.mjs';
+const { sweep, echo, canSweep, canEcho, TRENCH } = game();
 const start = { lo: 0, hi: 1000, pings: TRENCH.pingBudget };
 test('sweep halves the window', () => {
   const s = sweep(start, 700);

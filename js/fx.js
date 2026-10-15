@@ -1,7 +1,6 @@
 /* fx.js — the juice: screen shake, burst particles, and the reveal sweep.
    All transform/opacity only; every effect checks reduced motion itself. */
-import { motion } from './ui.js';
-export function shake(power = 6, ms = 260) {
+function shake(power = 6, ms = 260) {
   if (!motion()) return;
   const stage = document.getElementById('stage');
   stage.animate([
@@ -11,7 +10,7 @@ export function shake(power = 6, ms = 260) {
     { transform: 'translate(0,0)' },
   ], { duration: ms, easing: 'ease-out' });
 }
-export function burst(x, y, n = 10, color = 'rgba(47,212,255,0.9)') {
+function burst(x, y, n = 10, color = 'rgba(47,212,255,0.9)') {
   if (!motion()) return;
   const layer = document.getElementById('stage');
   for (let i = 0; i < n; i++) {
@@ -27,7 +26,7 @@ export function burst(x, y, n = 10, color = 'rgba(47,212,255,0.9)') {
     ], { duration: 480 + Math.random() * 240, easing: 'cubic-bezier(.1,.7,.3,1)' });
   }
 }
-export function reveal(targetM, mapRect) {
+function reveal(targetM, mapRect) {
   if (!motion()) return;
   const stage = document.getElementById('stage');
   const y = mapRect.top + (targetM / 1000) * mapRect.height;

@@ -1,7 +1,7 @@
 import test from 'node:test';
 import { strict as assert } from 'node:assert';
-import { generateRounds, dailySeed } from '../js/rounds.js';
-import { TRENCH } from '../js/balance.js';
+import { game } from './loader.mjs';
+const { generateRounds, dailySeed, TRENCH } = game();
 test('same seed => identical trench', () => {
   assert.deepEqual(generateRounds(12345), generateRounds(12345));
 });

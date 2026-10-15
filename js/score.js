@@ -1,7 +1,6 @@
 /* score.js — pure scoring. No DOM, no state: testable in isolation. */
-import { TIERS, TRENCH } from './balance.js';
 
-export function evaluate(guess, target, pingsUsed) {
+function evaluate(guess, target, pingsUsed) {
   const err = Math.abs(guess - target);
   let tier = null;
   for (const t of TIERS) {

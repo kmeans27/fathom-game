@@ -1,10 +1,8 @@
 /* rounds.js — the daily trench. Same seed => same 7 rounds for everyone. */
-import { mulberry32, hashSeed } from './prng.js';
-import { TRENCH } from './balance.js';
 
 /* Flavour only. The numbers carry the gameplay; these lines carry the mood.
    Purely fictional dive sites — the target depths are seeded, not real data. */
-export const SITES = [
+const SITES = [
   { name: 'The Lantern Shelf', flavour: 'Ship lanterns still warm to the touch.' },
   { name: 'Wreck of the S.S. Vesper', flavour: 'A liner that went down whole.' },
   { name: 'The Bone Orchard', flavour: 'Whale fall, spread like a garden.' },
@@ -26,7 +24,7 @@ export const SITES = [
   { name: 'Ladder to Nowhere', flavour: 'Rungs down into the dark.' },
   { name: 'The Piano Well', flavour: 'Nocturnes from a drowned hall.' },
 ];
-export function generateRounds(seed) {
+function generateRounds(seed) {
   const rand = mulberry32(seed);
   /* Fisher-Yates on the site list, then a target per round.
      Targets avoid the exact edges so "guess the middle" is not a freebie. */
@@ -42,7 +40,7 @@ export function generateRounds(seed) {
   }
   return rounds;
 }
-export function dailySeed(date) {
+function dailySeed(date) {
   const key = `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`;
   return hashSeed('fathom:' + key);
 }

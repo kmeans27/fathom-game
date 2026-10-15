@@ -1,6 +1,6 @@
 /* balance.js — single source of truth for every tunable number.
    The design doc explains WHY these values are what they are. */
-export const TRENCH = {
+const TRENCH = {
   depthMax: 1000,          // metres; the map is 0..1000
   rounds: 7,               // same as Krillion's 7 prompts
   pointsPerMetre: 10,      // score -> depth, like Krillion
@@ -15,7 +15,7 @@ export const TRENCH = {
     { name: 'twilight', to: 1000 },
   ],
 };
-export const TIERS = [
+const TIERS = [
   { id: 'perfect',   tol: 5,   points: 100 },
   { id: 'bullseye',  tol: 20,  points: 50 },
   { id: 'hit',       tol: 100, points: 20 },
