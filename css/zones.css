@@ -1,0 +1,16 @@
+/* zones.css — per-zone DOM tints. Canvas art reads palettes from js/core/zones.js;
+   these variables only retint DOM chrome (badges, vignette). */
+body { --z-top: #0a4b74; --z-bottom: #0d6d9c; --z-glow: rgba(55,224,255,.10); }
+body[data-zone="twilight"] { --z-top: #06294a; --z-bottom: #04182f; --z-glow: rgba(55,224,255,.06); }
+body[data-zone="midnight"] { --z-top: #010a16; --z-bottom: #01060f; --z-glow: rgba(20,120,160,.05); }
+body[data-zone="abyssal"]  { --z-top: #00040a; --z-bottom: #000205; --z-glow: rgba(10,60,90,.04); }
+body[data-zone="hadal"]    { --z-top: #000103; --z-bottom: #000001; --z-glow: rgba(0,0,0,0); }
+
+/* zone change retints slowly (900ms cross-fade, §7.2) */
+body { transition: --z-top 900ms linear, --z-bottom 900ms linear, background 900ms linear; }
+
+/* soft vignette driven by the zone glow var */
+#scope::after {
+  content: ""; position: absolute; inset: 0; pointer-events: none;
+  background: radial-gradient(120% 90% at 50% 42%, transparent 55%, var(--z-glow) 130%);
+}
