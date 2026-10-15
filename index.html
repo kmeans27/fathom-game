@@ -2,29 +2,49 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>FATHOM — a daily depth game</title>
-  <meta name="description" content="A daily depth-guessing game. Spend 10 sonar pings across 7 rounds. Every point takes you 10 metres down. Same trench for everyone, every day.">
-  <meta name="theme-color" content="#02060e">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>FATHOM — know how much you don't know</title>
+  <meta name="description" content="A two-minute daily descent. Read the contact, buy just enough certainty, and bet on your own confidence — deeper without cracking the hull.">
+  <meta name="theme-color" content="#01050b">
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="css/tokens.css">
   <link rel="stylesheet" href="css/base.css">
-  <link rel="stylesheet" href="css/theme-ocean.css">
-  <link rel="stylesheet" href="css/dive.css">
-  <script defer src="js/prng.js"></script>
-  <script defer src="js/balance.js"></script>
-  <script defer src="js/rounds.js"></script>
-  <script defer src="js/score.js"></script>
-  <script defer src="js/sonar.js"></script>
-  <script defer src="js/save.js"></script>
-  <script defer src="js/share.js"></script>
-  <script defer src="js/audio.js"></script>
-  <script defer src="js/fx.js"></script>
-  <script defer src="js/ui.js"></script>
+  <link rel="stylesheet" href="css/ui.css">
+  <link rel="stylesheet" href="css/zones.css">
+  <!-- classic deferred scripts: keeps file:// working (see commit e39e7be).
+       Only shipped files are listed; P3/P4/P5 phases extend this list. -->
+  <script defer src="js/core/rng.js"></script>
+  <script defer src="js/core/config.js"></script>
+  <script defer src="js/core/zones.js"></script>
+  <script defer src="js/core/daily.js"></script>
+  <script defer src="js/core/rounds.js"></script>
+  <script defer src="js/core/scoring.js"></script>
+  <script defer src="js/core/sonar.js"></script>
+  <script defer src="js/core/storage.js"></script>
+  <script defer src="js/core/stats.js"></script>
+  <script defer src="js/core/share.js"></script>
+  <script defer src="js/core/run.js"></script>
+  <script defer src="js/render/canvas.js"></script>
+  <script defer src="js/render/sea.js"></script>
+  <script defer src="js/render/scope.js"></script>
+  <script defer src="js/render/fx.js"></script>
+  <script defer src="js/audio/audio.js"></script>
+  <script defer src="js/audio/sfx.js"></script>
+  <script defer src="js/audio/bed.js"></script>
+  <script defer src="js/ui/dom.js"></script>
+  <script defer src="js/ui/a11y.js"></script>
+  <script defer src="js/ui/hud.js"></script>
+  <script defer src="js/ui/controls.js"></script>
+  <script defer src="js/ui/scopeinput.js"></script>
+  <script defer src="js/ui/cards.js"></script>
+  <script defer src="js/ui/log.js"></script>
+  <script defer src="js/ui/screens.js"></script>
   <script defer src="js/main.js"></script>
 </head>
-<body>
-  <div id="sea" aria-hidden="true"></div>
-  <div id="stage"></div>
+<body data-zone="sunlight">
+  <canvas id="sea" aria-hidden="true"></canvas>
+  <div id="scope" aria-hidden="true"></div>
   <div id="ui"></div>
+  <div id="live" class="sr-only" aria-live="polite"></div>
 </body>
 </html>
