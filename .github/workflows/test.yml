@@ -4,6 +4,17 @@ on:
     branches: [main]
 jobs:
   check:
-    runs-on: node-22-x
+    runs-on: ubuntu-latest
     steps:
-      - run: node --test tests/
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '22'
+      - name: Syntax-check every shipped file
+        run: |
+          for f in js/core/*.js js/render/*.js js/audio/*.js js/ui/*.js js/*.js; do
+            [ -f "$f" ] || continue
+            node --check "$f" || exit 1
+          done
+      - name: Unit tests
+        run: node --test tests/
