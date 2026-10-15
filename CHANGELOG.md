@@ -10,7 +10,9 @@ committing; the test suite gates the whole build.
 
 - **P0 — CI + module tree.** `.github/workflows/test.yml` syntax-checks every
   shipped file (`js/core`, `js/render`, `js/audio`, `js/ui`, `js`) and runs
-  `node --test tests/`. New `js/core|render|audio|ui` tree created.
+  `node --test tests/*.test.js` plus `tests/smoke.mjs` as a step (a bare
+  `tests/` dir argument is treated as a module path on Node 22, which CI pins).
+  New `js/core|render|audio|ui` tree created.
 - **P1 — pure core, fully tested (51 tests, all green).** `config, rng, zones,
   daily, rounds, scoring, sonar, storage, stats, share, run` — deterministic
   mulberry32/FNV-1a RNG, UTC day keys (DST-proof), pure reducers, run state
@@ -69,3 +71,6 @@ committing; the test suite gates the whole build.
 - Repo: this line is tagged **v1.0-dev**; v0.1 history stays in git log.
 - Save data: storage schema `version: 2` with v1→v2 migration (`js/core/storage.js`);
   schema version is checked on every load.
+- CI note: as of 2026-10-15 GitHub Actions jobs on this account fail instantly
+  with "job not started, account locked due to a billing issue" — the workflow
+  is valid; the same CI commands were run locally on Node 22 and all pass.
